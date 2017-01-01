@@ -1,0 +1,19 @@
+{
+  "name": "idea-board",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "GPL-3.0",
+  "scripts": {
+    "start": "npm run watch;",
+    "watch": "webpack --config build/webpack.dev.js  --watch"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.0.0-beta.17",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-polyfill": "^6.20.0",
+    "babel-preset-latest": "^6.16.0",
+    "typescript": "^2.1.4",
+    "webpack": "2.1.0-beta.28"
+  }
+}
