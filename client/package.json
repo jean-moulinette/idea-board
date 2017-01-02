@@ -13,6 +13,12 @@
     "babel-loader": "^6.2.10",
     "babel-polyfill": "^6.20.0",
     "babel-preset-latest": "^6.16.0",
+    "css-loader": "^0.26.1",
+    "css-raw-loader": "^0.1.1",
+    "extract-text-webpack-plugin": "2.0.0-beta.4",
+    "node-sass": "^4.1.1",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
     "typescript": "^2.1.4",
     "webpack": "2.1.0-beta.28"
   }
