@@ -1,8 +1,7 @@
 {
-  "name": "idea-board",
+  "name": "idea-board-client",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "GPL-3.0",
   "scripts": {
     "start": "npm run watch;",
     "watch": "webpack --config build/webpack.dev.js  --watch"

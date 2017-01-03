@@ -1,0 +1,15 @@
+{
+  "name": "idea-board",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
+  "repository": "https://github.com/Fanghornn/idea-board.git",
+  "author": "Fanghornn <fanghornn@gmail.com>",
+  "scripts": {
+    "start": "concurrently --raw \"npm run client\" \"npm run server\"",
+    "server": "cd server && npm start",
+    "client": "cd client && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^3.1.0"
+  }
+}
