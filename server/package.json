@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "supervisor app.js"
+    "start": "supervisor -n error app.js"
   },
   "dependencies": {
-    "hapi": "^16.1.0",
-    "inert": "^4.1.0"
+    "body-parser": "^1.17.1",
+    "colors": "^1.1.2",
+    "express": "^4.15.2"
   },
   "devDependencies": {
     "supervisor": "^0.12.0"
