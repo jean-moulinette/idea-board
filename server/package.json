@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "supervisor -n error app.js"
+    "start": "supervisor -n error NODE_PATH=. app.js"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
