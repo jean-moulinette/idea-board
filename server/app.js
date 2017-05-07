@@ -1,2 +1,3 @@
-const bootstraper = require('./bootstrap/index.js')
-bootstraper.init()
+const { bootstrapServer }  = require('bootstrap/')
+
+bootstrapServer();
