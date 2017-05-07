@@ -1,10 +1,5 @@
 const { routeFactory } = require('bootstrap/router/utils.js')
-
-const HTTP_METHOD = exports.HTTP_METHOD = {
-  GET: 'GET',
-  POST: 'POST',
-  ALL: 'ALL',
-}
+const { HTTP_METHOD } = require('bootstrap/router/constants.js')
 
 const defaultRoutes = [
   routeFactory(HTTP_METHOD.GET, '/', handleDefault),
