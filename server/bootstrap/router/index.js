@@ -1,5 +1,4 @@
 const { routeFactory } = require('bootstrap/router/utils.js')
-const { responseFactory } = require('bootstrap/utils.js')
 
 const HTTP_METHOD = exports.HTTP_METHOD = {
   GET: 'GET',
