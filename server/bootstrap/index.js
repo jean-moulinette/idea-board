@@ -1,29 +1,11 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const colors = require('colors')
+const { serverFactory } = require('bootstrap/utils.js')
 
-const routesBootsraper = require('./routes/index.js')
-
-exports.init = () => {
+exports.bootstrapServer = () => {
   const { env: { PORT } } = process
-
-  const server = createServer()
-  startServer(server, PORT)
-};
-
-function createServer() {
-  const server = express()
-  configureServer(server)
-  routesBootsraper.initRoutes(server)
-
-  return server
+  createServer(PORT)
 }
 
-function configureServer(server) {
-  server.use(bodyParser.json())
-}
-
-function startServer(server, port) {
-  const successMessage = `Server running on port: ${port}`.green
-  server.listen(port, () => console.log(successMessage))
+function createServer(port) {
+  const server = serverFactory()
+  server.startServer(port)
 }
