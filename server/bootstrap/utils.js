@@ -18,13 +18,20 @@ exports.serverFactory = (server) => ({
   },
 
   configureServer: function() {
-    this.addMiddleWare(json())
-  
     attachRoutes(this)
+    this.addMiddleWare(json())
+    this.addMiddleWare(this.handleForbiddenRoutes)
   },
 
   addMiddleWare: function(middleware) {
     this.server.use(middleware)
+  },
+
+  handleForbiddenRoutes: function(req, res) {
+    const response = responseFactory(res)
+
+    response.setStatus(404)
+    response.send('Nope')
   },
 
   listen: function() {
@@ -51,7 +58,11 @@ const responseFactory = (response) => ({
 
   send: function(data) {
     response.send(data)
-  }
+  },
+
+  setStatus: function(status) {
+    response.status(status)
+  },
 
 })
 

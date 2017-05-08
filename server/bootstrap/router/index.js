@@ -4,7 +4,6 @@ const { HTTP_METHOD } = require('bootstrap/router/constants.js')
 const defaultRoutes = [
   routeFactory(HTTP_METHOD.GET, '/', handleDefault),
   routeFactory(HTTP_METHOD.POST, '/', handleDefault),
-  routeFactory(HTTP_METHOD.ALL, '*', forbiddenHandler),
 ]
 
 const routes = [
@@ -29,8 +28,4 @@ function attachRouteToServer(server, route) {
 function handleDefault(response, data) {
   console.log(data)
   response.send('Hello world');
-}
-
-function forbiddenHandler(response) {
-  response.send('nope')
 }
