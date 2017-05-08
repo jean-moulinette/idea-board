@@ -2,7 +2,9 @@ require('colors')
 const express = require('express')
 const { json } = require('body-parser')
 
-const { attachRoutes }  = require('bootstrap/router')
+const { requestFactory } = require('bootstrap/server/utils/requestFactory.js')
+const { responseFactory } = require('bootstrap/server/utils/responseFactory.js')
+const { bootstrapRouter }  = require('bootstrap/router/')
 
 exports.serverFactory = (server) => ({
 
@@ -18,7 +20,7 @@ exports.serverFactory = (server) => ({
   },
 
   configureServer: function() {
-    attachRoutes(this)
+    bootstrapRouter(this)
     this.addMiddleWare(json())
     this.addMiddleWare(this.handleForbiddenRoutes)
   },
@@ -50,45 +52,6 @@ exports.serverFactory = (server) => ({
 
       onRequest(response, requestBody)
     })
-  }
-
-})
-
-const responseFactory = (response) => ({
-
-  send: function(data) {
-    response.send(data)
-  },
-
-  setStatus: function(status) {
-    response.status(status)
-  },
-
-})
-
-const requestFactory = (request) => ({
-
-  dataResolverFactory: function() {
-    return {
-      get: this.fetchGetParams,
-      post: this.fetchPostParams,
-    }
-  },
-
-  fetchGetParams: function() {
-    return request.query
-  },
-
-  fetchPostParams: function() {
-    return request.body
-  },
-
-  fetchData: function(httpMethod){
-    const dataResolver = this.dataResolverFactory()
-
-    return dataResolver[httpMethod]
-      ? dataResolver[httpMethod]()
-      : {}
   }
 
 })

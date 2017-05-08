@@ -1,3 +1,3 @@
-const { bootstrapServer }  = require('bootstrap/')
+const { bootstrapServer }  = require('bootstrap/server')
 
 bootstrapServer();

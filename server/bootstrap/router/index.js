@@ -1,5 +1,6 @@
-const { routeFactory } = require('bootstrap/router/utils.js')
 const { HTTP_METHOD } = require('bootstrap/router/constants.js')
+const { routeFactory } = require('bootstrap/router/utils/routeFactory.js')
+const { attachRoutes }  = require('bootstrap/router/utils/utils.js')
 
 const defaultRoutes = [
   routeFactory(HTTP_METHOD.GET, '/', handleDefault),
@@ -10,22 +11,11 @@ const routes = [
   ...defaultRoutes,
 ]
 
-exports.attachRoutes = (server) => {
-  routes.forEach(route => attachRouteToServer(server, route));
-};
-
-function attachRouteToServer(server, route) {
-  const { method, path, handler } = route
-
-  const httpMethod = method.toLowerCase()
-  const onRequest = (response, data) => {
-    handler(response, data)
-  }
-
-  server.attachRouteHandler(httpMethod, path, onRequest)
-}
-
 function handleDefault(response, data) {
   console.log(data)
   response.send('Hello world');
+}
+
+exports.bootstrapRouter = (server) => {
+  attachRoutes(server, routes)
 }
