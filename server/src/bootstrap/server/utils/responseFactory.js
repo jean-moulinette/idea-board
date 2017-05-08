@@ -1,4 +1,4 @@
-exports.responseFactory = (response) => ({
+exports.responseFactory = response => ({
 
   send: function(data) {
     response.send(data)

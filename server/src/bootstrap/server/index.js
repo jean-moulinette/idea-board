@@ -1,4 +1,4 @@
-const { serverFactory } = require('bootstrap/server/utils/serverFactory.js')
+const { serverFactory } = require('src/bootstrap/server/utils/serverFactory.js')
 
 exports.bootstrapServer = () => {
   const { env: { PORT } } = process

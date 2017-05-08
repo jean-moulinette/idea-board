@@ -1,7 +1,3 @@
-exports.attachRoutes = (server, routes) => {
-  routes.forEach(route => attachRouteToServer(server, route));
-};
-
 function attachRouteToServer(server, route) {
   const { method, path, handler } = route
 
@@ -11,4 +7,8 @@ function attachRouteToServer(server, route) {
   }
 
   server.attachRouteHandler(httpMethod, path, onRequest)
+}
+
+exports.attachRoutes = (server, routes) => {
+  routes.forEach(route => attachRouteToServer(server, route))
 }

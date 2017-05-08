@@ -1,4 +1,4 @@
-exports.requestFactory = (request) => ({
+exports.requestFactory = request => ({
 
   dataResolverFactory: function() {
     return {
@@ -15,12 +15,12 @@ exports.requestFactory = (request) => ({
     return request.body
   },
 
-  fetchData: function(httpMethod){
+  fetchData: function(httpMethod) {
     const dataResolver = this.dataResolverFactory()
 
     return dataResolver[httpMethod]
       ? dataResolver[httpMethod]()
       : {}
-  }
+  },
 
 })
