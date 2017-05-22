@@ -2,6 +2,8 @@ const { HTTP_METHOD } = require('src/bootstrap/router/constants.js')
 const { routeFactory } = require('src/bootstrap/router/utils/routeFactory.js')
 const { attachRoutes } = require('src/bootstrap/router/utils/utils.js')
 
+const { ideasRoutes } = require('src/bootstrap/router/business/ideas/')
+
 const defaultRoutes = [
   routeFactory(HTTP_METHOD.GET, '/', handleDefault),
   routeFactory(HTTP_METHOD.POST, '/', handleDefault),
@@ -9,6 +11,7 @@ const defaultRoutes = [
 
 const routes = [
   ...defaultRoutes,
+  ...ideasRoutes,
 ]
 
 function handleDefault(response, data) {
