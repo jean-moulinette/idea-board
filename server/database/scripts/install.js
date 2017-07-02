@@ -25,43 +25,92 @@ function createDatabase(config) {
 
 async function bootStrapDatabase(db) {
   console.log('Successfully connected to db server')
-  await createUsersCollection(db)
-  await createBoardsCollection(db)
-  await createIdeasCollection(db)
+
+  const user = 'superUser'
+
+  const usersCollection = await createUsersCollection(db)
+  await createUniqueDocumentIndex({
+    collection: usersCollection,
+    name: 'userNameUnique',
+    field: 'name',
+  })
+  await insertUser(usersCollection, user)
+
+  const boardsCollection = await createBoardsCollection(db)
+  await insertBoardForUser({
+    boardsCollection,
+    usersCollection,
+    userName: user,
+    boardName: 'superUser\'s board',
+  })
+
   db.close()
+}
+
+function createUniqueDocumentIndex({
+  collection,
+  name,
+  field,
+}) {
+  return collection.createIndex(name, { [field]: 1 }, { unique: true })
 }
 
 function createUsersCollection(db) {
   return db.createCollection('users')
-    .then((collection) => {
-      collection.insertOne({
-        name: 'superUser',
-        ownedBoards: [],
-        guestBoards: [],
-      })
-    })
+    .catch(handlePromiseRejection)
+}
+
+function insertUser(collection, userName) {
+  return collection.insertOne({
+    name: userName,
+    ownedBoards: [],
+    guestBoards: [],
+  })
     .catch(handlePromiseRejection)
 }
 
 function createBoardsCollection(db) {
   return db.createCollection('boards')
-    .then((collection) => {
-      collection.insertOne({
-        name: 'example board',
-      })
-    })
     .catch(handlePromiseRejection)
 }
 
-function createIdeasCollection(db) {
-  return db.createCollection('ideas')
-    .then((collection) => {
-      collection.insertOne({
-        text: 'Hello World',
-        board: 1,
-      })
+function insertBoardForUser({
+  boardsCollection,
+  usersCollection,
+  userName,
+  boardName,
+}) {
+  const ideas = []
+
+  for (let i = 0; i < 5; i += 1) {
+    ideas.push(generateIdea())
+  }
+
+  return boardsCollection.insertOne({
+    name: boardName,
+    ideas,
+  })
+    .then((opResult) => {
+      const { insertedId } = opResult
+
+      const documentQuery = {
+        name: userName,
+      }
+      const updateStatement = {
+        $set: {
+          ownedBoards: [insertedId],
+        },
+      }
+
+      return usersCollection.findOneAndUpdate(documentQuery, updateStatement)
     })
-    .catch(handlePromiseRejection)
+}
+
+function generateIdea() {
+  return {
+    text: 'Hello my friend',
+    creationDate: new Date().toISOString(),
+  }
 }
 
 function handlePromiseRejection(reason) {
