@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb')
 
-const { getConfig } = require('config')
+const { getConfig } = require('utils/config')
 
 getConfig()
   .then(createDatabase)
