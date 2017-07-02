@@ -6,13 +6,7 @@
 
   Lines that begins by `#` are considered as comments. 
 
-  Here is a template for required keys
-
-  ```
-    DATABASE_HOST=localhost
-    DATABASE_PORT=1338
-    DATABASE_NAME=idea-board
-  ```
+  You can find a template file in this directory named `config_template` for required keys to get quickly started.
 
   ## Database
 
