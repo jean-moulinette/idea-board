@@ -1,3 +1,4 @@
+const readline = require('readline')
 const { MongoClient } = require('mongodb')
 
 const { getConfig } = require('utils/config')
@@ -5,6 +6,11 @@ const { getConfig } = require('utils/config')
 getConfig()
   .then(createDatabase)
   .catch(handlePromiseRejection)
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+})
 
 function createDatabase(config) {
   const {
@@ -26,7 +32,13 @@ function createDatabase(config) {
 async function bootStrapDatabase(db) {
   console.log('Successfully connected to db server')
 
-  const user = 'superUser'
+  const isDatabaseDropped = await promptDropDatabase(db)
+
+  if (!isDatabaseDropped) {
+    throw new Error('Avorting: Couldn\'t drop database')
+  }
+
+  const user = await promptLogin()
 
   const usersCollection = await createUsersCollection(db)
   await createUniqueDocumentIndex({
@@ -41,10 +53,57 @@ async function bootStrapDatabase(db) {
     boardsCollection,
     usersCollection,
     userName: user,
-    boardName: 'superUser\'s board',
+    boardName: `${user}'s board`,
   })
 
   db.close()
+}
+
+function promptDropDatabase(db) {
+  return new Promise((resolve, reject) => {
+    const question = 'This will drop current database, are you sure ? (y/n) '
+
+    rl.question(question, (answer) => {
+      const answerParsed = answer.toLowerCase()
+
+      if (answerParsed !== 'y' && answerParsed !== 'n') {
+        const errorMsg = 'Please answer with "y" or "n" only'
+        reject(errorMsg)
+      }
+
+      if (answerParsed === 'n') {
+        resolve(false)
+      } else {
+        db.dropDatabase()
+          .then(() => {
+            resolve(true)
+          })
+          .catch(() => {
+            resolve(false)
+          })
+      }
+    })
+  })
+    .catch((reason) => {
+      throw new Error(reason)
+    })
+}
+
+function promptLogin() {
+  return new Promise((resolve, reject) => {
+    const question = 'Choose a login for your super user: '
+    rl.question(question, (login) => {
+      const errorMsg = 'You must provide a login for your first user, operation avorted :('
+      if (!login) {
+        reject(errorMsg)
+      }
+      resolve(login)
+      rl.close()
+    })
+  })
+    .catch((reason) => {
+      throw new Error(reason)
+    })
 }
 
 function createUniqueDocumentIndex({
