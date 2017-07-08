@@ -14,8 +14,9 @@
 
   Then, run a mongo daemon on the same host and port that you provided in the idea-project's `.config` file.
 
-  Once your server is running, run the following node script to bootstrap the mongodb databse.
+  Once your server is running, run the following npm scripts to bootstrap the mongodb database.
 
   ```
-    node database/scripts/install.js
+    npm run db:migrate
+    npm run db:seed
   ```

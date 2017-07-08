@@ -7,7 +7,9 @@
   ],
   "scripts": {
     "start": "supervisor -n error src/app.js",
-    "lint": "eslint src --env node; exit 0"
+    "lint": "eslint src --env node; exit 0",
+    "db:migrate": "node database/scripts/migrate.js",
+    "db:seed": "node database/scripts/seed.js"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
