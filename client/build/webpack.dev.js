@@ -1,13 +1,18 @@
 const path = require('path')
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const serverPath  = "../../server"
 
 module.exports = {
 
-	entry: "./src/index.ts",
+	entry: {
+    main: "./src/index.ts",
+  },
 
 	output: {
-		path: path.resolve(__dirname, "../../server/public"),
-		filename: "bundle.js",
+		path: path.resolve(__dirname, `${serverPath}/public`),
+		filename: "[name].[hash].js",
 	},
 
 	devtool: "inline-source-map",
@@ -33,7 +38,12 @@ module.exports = {
 	},
 
 	plugins: [
-		new ExtractTextPlugin("styles.css")
+		new ExtractTextPlugin("[name].[hash].css"),
+    new HtmlWebpackPlugin({
+      title: 'Idea Board',
+      template: path.resolve(__dirname, `${serverPath}/src/view-templates/index.html`),
+      inject: true
+    }),
 	]
 
 }
