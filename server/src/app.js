@@ -1,8 +1,9 @@
 const { bootstrapServer } = require('src/bootstrap/server')
 const { getConfig } = require('utils/config')
 
-getConfig().then((config) => {
-  process.config = config
+async function main() {
+  process.config = await getConfig()
   bootstrapServer()
-})
+}
 
+main()
