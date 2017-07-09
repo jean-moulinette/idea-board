@@ -1,23 +1,25 @@
-const { HTTP_METHOD } = require('src/bootstrap/router/constants.js')
-const { routeFactory } = require('src/bootstrap/router/utils/routeFactory.js')
-const { attachRoutes } = require('src/bootstrap/router/utils/utils.js')
+const { attachRoutes } = require('src/bootstrap/router/utils/router-utils')
+const {
+  ideasRoutes,
+  boardsRoutes,
+  usersRoutes,
+  viewsRoutes,
+} = require('src/bootstrap/router/routes').default
 
-const { ideasRoutes } = require('src/bootstrap/router/business/ideas/')
-
-const defaultRoutes = [
-  routeFactory(HTTP_METHOD.GET, '/', handleDefault),
-  routeFactory(HTTP_METHOD.POST, '/', handleDefault),
-]
-
-const routes = [
-  ...defaultRoutes,
+const apiRoutes = [
+  ...usersRoutes,
+  ...boardsRoutes,
   ...ideasRoutes,
 ]
 
-function handleDefault(response, data) {
-  console.log(data)
-  response.send('Hello world')
-}
+const views = [
+  ...viewsRoutes,
+]
+
+const routes = [
+  ...apiRoutes,
+  ...views,
+]
 
 exports.bootstrapRouter = (server) => {
   attachRoutes(server, routes)

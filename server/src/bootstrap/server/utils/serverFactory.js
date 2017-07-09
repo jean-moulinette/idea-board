@@ -39,7 +39,7 @@ exports.serverFactory = () => ({
     const port = this.port
     const successMessage = `Server running on port: ${port}`.green
 
-    this.server.listen(port, () => console.log(successMessage))
+    this.server.listen(port, console.log(successMessage))
   },
 
   attachRouteHandler: function(httpMethod, path, onRequest) {
