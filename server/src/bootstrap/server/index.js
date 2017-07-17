@@ -1,8 +1,8 @@
 const { serverFactory } = require('src/bootstrap/server/utils/serverFactory.js')
 
 exports.bootstrapServer = () => {
-  const { env: { PORT } } = process
+  const { SERVER_PORT } = process.config
 
   const server = serverFactory()
-  server.startServer(PORT)
+  server.startServer(SERVER_PORT)
 }
