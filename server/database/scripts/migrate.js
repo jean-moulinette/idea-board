@@ -21,7 +21,7 @@ function connectServer(config) {
       return migrateDatabase(db)
     })
     .then(() => {
-      console.log(`\nSuccessfully ${DATABASE_NAME} database`)
+      console.log(`\nSuccessfully created ${DATABASE_NAME} database`)
     })
     .catch(handlePromiseRejection)
 }

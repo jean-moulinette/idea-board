@@ -6,10 +6,10 @@
     "./src/"
   ],
   "scripts": {
-    "start": "supervisor -n error src/app.js",
+    "start": "env NODE_PATH=./ supervisor -n error src/app.js",
     "lint": "eslint src --env node; exit 0",
-    "db:migrate": "node database/scripts/migrate.js",
-    "db:seed": "node database/scripts/seed.js"
+    "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js",
+    "db:seed": "env NODE_PATH=./ node database/scripts/seed.js"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
