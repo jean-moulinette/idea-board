@@ -4,6 +4,10 @@ exports.responseFactory = response => ({
     response.send(data)
   },
 
+  sendJSON: function(data) {
+    response.send(JSON.stringify(data))
+  },
+
   sendFile: function(file, options) {
     response.sendFile(file, options)
   },
