@@ -2,11 +2,14 @@
   "name": "idea-board-server",
   "version": "1.0.0",
   "main": "app.js",
+  "engines": {
+    "node": ">=8.2.1"
+  },
   "files": [
     "./src/"
   ],
   "scripts": {
-    "start": "env NODE_PATH=./ supervisor -n error src/app.js",
+    "start": "env NODE_PATH=./ supervisor -n exit src/app.js",
     "lint": "eslint src --env node; exit 0",
     "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js",
     "db:seed": "env NODE_PATH=./ node database/scripts/seed.js"

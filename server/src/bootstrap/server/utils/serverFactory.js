@@ -1,21 +1,26 @@
 require('colors')
 const express = require('express')
 const { json } = require('body-parser')
-const { requestFactory } = require('src/bootstrap/server/utils/requestFactory.js')
-const { responseFactory } = require('src/bootstrap/server/utils/responseFactory.js')
+
+const { Database } = require('src/model/utils/databaseFactory')
+const { requestFactory } = require('src/bootstrap/server/utils/requestFactory')
+const { responseFactory } = require('src/bootstrap/server/utils/responseFactory')
 const { bootstrapRouter } = require('src/bootstrap/router/')
 
 exports.serverFactory = () => ({
 
   server: express(),
 
-  port: null,
+  port: global.config.SERVER_PORT,
 
-  startServer(port) {
-    this.port = port
-
+  startServer() {
+    this.initializeDatabase()
     this.configureServer()
     this.listen()
+  },
+
+  initializeDatabase: function() {
+    Database.connect()
   },
 
   configureServer: function() {
