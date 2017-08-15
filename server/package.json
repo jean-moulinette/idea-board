@@ -11,7 +11,7 @@
   "scripts": {
     "start": "env NODE_PATH=./ supervisor -n exit src/app.js",
     "lint": "eslint src --env node; exit 0",
-    "test": "mocha --watch --growl --recursive --reporter nyan ./**/*.spec.js",
+    "test": "env NODE_ENV=test mocha --watch --recursive --reporter nyan ./**/*.spec.js",
     "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js",
     "db:seed": "env NODE_PATH=./ node database/scripts/seed.js"
   },
