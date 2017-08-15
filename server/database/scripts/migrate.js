@@ -1,29 +1,44 @@
 const { MongoClient } = require('mongodb')
 
-const { getConfig } = require('utils/config')
+const { config } = require('src/utils/config')
 
-getConfig()
-  .then(connectServer)
-  .catch(handlePromiseRejection)
+main()
 
-function connectServer(config) {
+async function main() {
   const {
     DATABASE_HOST,
     DATABASE_PORT,
     DATABASE_NAME,
+    TEST_DATABASE_NAME,
   } = config
 
+  // Database bootstrap
   const connection = `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`
 
-  MongoClient.connect(connection)
-    .then((db) => {
-      console.log('\nSuccessfully connected to db server')
-      return migrateDatabase(db)
-    })
-    .then(() => {
-      console.log(`\nSuccessfully created ${DATABASE_NAME} database`)
-    })
-    .catch(handlePromiseRejection)
+  try {
+    const db = await MongoClient.connect(connection)
+    console.log('\nSuccessfully connected to database')
+    await migrateDatabase(db)
+    console.log(`\nSuccessfully created ${DATABASE_NAME} database\n`)
+  } catch (e) {
+    handlePromiseRejection(e)
+  }
+
+  if (!TEST_DATABASE_NAME) {
+    throw new Error('Unable to find test database name. You won\'t be able to run tests')
+  }
+
+  // Test database bootstrap
+  const testConnection = `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${TEST_DATABASE_NAME}`
+
+  try {
+    const db = await MongoClient.connect(testConnection)
+    console.log('\nSuccessfully connected to test database')
+    await migrateDatabase(db)
+    console.log(`\nSuccessfully created ${TEST_DATABASE_NAME} database\n`)
+  } catch (e) {
+    handlePromiseRejection(e)
+  }
 }
 
 async function migrateDatabase(db) {

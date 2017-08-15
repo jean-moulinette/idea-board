@@ -2,6 +2,7 @@ require('colors')
 const express = require('express')
 const { json } = require('body-parser')
 
+const { config } = require('src/utils/config')
 const { Database } = require('src/model/utils/databaseFactory')
 const { requestFactory } = require('src/bootstrap/server/utils/requestFactory')
 const { responseFactory } = require('src/bootstrap/server/utils/responseFactory')
@@ -11,7 +12,7 @@ exports.serverFactory = () => ({
 
   server: express(),
 
-  port: global.config.SERVER_PORT,
+  port: config.SERVER_PORT,
 
   startServer() {
     this.initializeDatabase()
