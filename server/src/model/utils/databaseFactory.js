@@ -1,7 +1,6 @@
 const {
   buildDatabaseConn,
   getDatabaseSession,
-  parseQuery,
 } = require('./database-utils')
 
 function databaseFactory() {

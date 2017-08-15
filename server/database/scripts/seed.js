@@ -1,18 +1,16 @@
 const readline = require('readline')
 const { MongoClient } = require('mongodb')
 
-const { getConfig } = require('utils/config')
+const { config } = require('src/utils/config')
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 })
 
-getConfig()
-  .then(connectServer)
-  .catch(handlePromiseRejection)
+main()
 
-async function connectServer(config) {
+async function main() {
   const {
     DATABASE_HOST,
     DATABASE_PORT,

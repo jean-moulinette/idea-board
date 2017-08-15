@@ -1,29 +1,23 @@
 const fs = require('fs')
 
-exports.getConfig = async () => {
-  const configLines = await readConfigFile()
+exports.config = getConfig()
+
+function getConfig() {
+  const configLines = readConfigFile()
   return createConfigObject(configLines)
 }
 
 function readConfigFile() {
-  const configFilePath = `${__dirname}/../.config`
+  const configFilePath = `${__dirname}/../../.config`
 
-  return new Promise((resolve, reject) => {
-    fs.readFile(configFilePath, 'utf-8', (err, configFile) => {
-      if (err) {
-        reject('Unable to read server ".config" file')
-      }
-
-      resolve(configFile)
-    })
-  })
+  return fs.readFileSync(configFilePath, 'utf-8')
 }
 
 function createConfigObject(configLines) {
   const configObject = {}
 
   configLines.split('\n').forEach((configLine) => {
-    if (configLine[0] !== '#') {
+    if (configLine.length > 0 && configLine[0] !== '#') {
       const { key, value } = parseLine(configLine)
       configObject[key] = value
     }
