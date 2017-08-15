@@ -11,6 +11,7 @@
   "scripts": {
     "start": "env NODE_PATH=./ supervisor -n exit src/app.js",
     "lint": "eslint src --env node; exit 0",
+    "test": "mocha --growl --recursive --reporter nyan ./**/*.spec.js",
     "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js",
     "db:seed": "env NODE_PATH=./ node database/scripts/seed.js"
   },
@@ -21,9 +22,11 @@
     "mongodb": "^2.2.29"
   },
   "devDependencies": {
+    "chai": "^4.1.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.1.3",
     "eslint-plugin-import": "^2.2.0",
+    "mocha": "^3.5.0",
     "supervisor": "^0.12.0"
   }
 }
