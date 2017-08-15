@@ -12,25 +12,46 @@ getConfig()
   .then(connectServer)
   .catch(handlePromiseRejection)
 
-function connectServer(config) {
+async function connectServer(config) {
   const {
     DATABASE_HOST,
     DATABASE_PORT,
     DATABASE_NAME,
+    TEST_DATABASE_NAME,
   } = config
 
+  // Database seed
   const connection = `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`
 
-  MongoClient.connect(connection)
-    .then(seedDatabase)
-    .catch(handlePromiseRejection)
+  try {
+    const db = await MongoClient.connect(connection)
+    const superUserName = await promptLogin()
+    await seedDatabase(db, superUserName)
+    console.log('\nSuccessfully seeded database')
+  } catch (e) {
+    handlePromiseRejection(e)
+  }
+
+  if (!TEST_DATABASE_NAME) {
+    throw new Error('Unable to find test database name. You won\'t be able to run tests')
+  }
+
+  // Test database seed
+  const testConnection = `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${TEST_DATABASE_NAME}`
+
+  try {
+    const db = await MongoClient.connect(testConnection)
+    await seedDatabase(db, 'test-super-user')
+    console.log('\nSuccessfully seeded test database')
+  } catch (e) {
+    handlePromiseRejection(e)
+  }
 }
 
-async function seedDatabase(db) {
+async function seedDatabase(db, user) {
   const usersCollection = await getCollection('users', db)
   const boardsCollection = await getCollection('boards', db)
 
-  const user = await promptLogin()
   await insertUser(usersCollection, user)
 
   await insertBoardForUser({
@@ -39,8 +60,6 @@ async function seedDatabase(db) {
     userName: user,
     boardName: `${user}'s board`,
   })
-
-  console.log('\nSuccessfully seeded database')
 
   return db.close()
 }

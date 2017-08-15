@@ -1,3 +1,7 @@
+###########
+# This file is an exemple file, you need to create a '.config' file 
+# with the same structure if you want to start the project (see README)
+
 #database
 DATABASE_HOST=
 DATABASE_PORT=
@@ -5,3 +9,6 @@ DATABASE_NAME=
 
 #server
 SERVER_PORT=
+
+#test
+TEST_DATABASE_NAME=
