@@ -1,8 +1,7 @@
 const { serverFactory } = require('src/bootstrap/server/utils/serverFactory')
 
-exports.bootstrapServer = () => {
-  const server = serverFactory()
-  server.startServer()
+const server = serverFactory()
 
-  return server
-}
+exports.ideaBoardServer = server.server
+exports.ideaBoardApp = server.app
+exports.ideaBoard = server

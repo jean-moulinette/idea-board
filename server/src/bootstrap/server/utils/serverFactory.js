@@ -10,14 +10,24 @@ const { bootstrapRouter } = require('src/bootstrap/router/')
 
 exports.serverFactory = () => ({
 
-  server: express(),
+  app: express(),
 
-  port: config.SERVER_PORT,
+  server: null,
 
   startServer() {
+    const { env: { NODE_ENV } } = process
+    this.port = NODE_ENV === 'test'
+      ? config.TEST_SERVER_PORT
+      : config.SERVER_PORT || process.env.PORT
+
     this.initializeDatabase()
     this.configureServer()
-    this.listen()
+
+    this.server = this.listen()
+  },
+
+  stopServer() {
+    this.server.close()
   },
 
   initializeDatabase: function() {
@@ -31,7 +41,7 @@ exports.serverFactory = () => ({
   },
 
   addMiddleWare: function(middleware) {
-    this.server.use(middleware)
+    this.app.use(middleware)
   },
 
   handleForbiddenRoutes: function(req, res) {
@@ -45,11 +55,11 @@ exports.serverFactory = () => ({
     const port = this.port
     const successMessage = `Server running on port: ${port}`.green
 
-    this.server.listen(port, console.log(successMessage))
+    return this.app.listen(port, console.log(successMessage))
   },
 
   attachRouteHandler: function(httpMethod, path, onRequest) {
-    this.server[httpMethod](path, (req, res) => {
+    this.app[httpMethod](path, (req, res) => {
       const response = responseFactory(res)
       const request = requestFactory(req)
 

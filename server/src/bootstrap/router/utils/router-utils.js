@@ -4,6 +4,9 @@ function attachRouteToServer(server, route) {
   const httpMethod = method.toLowerCase()
   const onRequest = (response, data) => {
     handler(response, data)
+      .catch((e) => {
+        response.sendJSON(e.message)
+      })
   }
 
   server.attachRouteHandler(httpMethod, path, onRequest)

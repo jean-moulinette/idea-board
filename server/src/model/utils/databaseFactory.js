@@ -19,7 +19,6 @@ function databaseFactory() {
 
     async connect() {
       core.conn = buildDatabaseConn()
-
       try {
         core.db = await getDatabaseSession(core.conn)
       } catch (e) {

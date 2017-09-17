@@ -11,7 +11,8 @@
   "scripts": {
     "start": "env NODE_PATH=./ supervisor -n exit src/app.js",
     "lint": "eslint src --env node; exit 0",
-    "test": "env NODE_ENV=test mocha --watch --recursive --reporter nyan ./**/*.spec.js",
+    "test:unit:watch": "env NODE_ENV=test mocha --watch --recursive --reporter dot ./src/**/*.spec.js",
+    "test:integration:watch": "env NODE_ENV=test mocha --watch --recursive --timeout 4000 --reporter dot ./tests/index.spec.js ./tests/**/*.spec.js",
     "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js",
     "db:seed": "env NODE_PATH=./ node database/scripts/seed.js"
   },
@@ -23,10 +24,11 @@
   },
   "devDependencies": {
     "chai": "^4.1.1",
+    "chai-http": "^3.0.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.1.3",
     "eslint-plugin-import": "^2.2.0",
-    "mocha": "^3.5.0",
+    "mocha": "^4.0.1",
     "supervisor": "^0.12.0"
   }
 }

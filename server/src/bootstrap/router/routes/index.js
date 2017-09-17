@@ -1,6 +1,6 @@
-const { ideasRoutes } = require('./api/ideasRoutes')
-const { boardsRoutes } = require('./api/boardsRoutes')
-const { usersRoutes } = require('./api/usersRoutes')
+const { ideasRoutes } = require('./api/ideas/ideasRoutes')
+const { boardsRoutes } = require('./api/boards/boardsRoutes')
+const { usersRoutes } = require('./api/users/usersRoutes')
 const { viewsRoutes } = require('./views/viewsRoutes')
 
 exports.default = {

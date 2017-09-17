@@ -4,7 +4,7 @@ const { BOARDS_COLLECTION } = require('./constants')
 
 function BoardsRepository() {
   return {
-    async getBoardsForUser(userName) {
+    async getOwnedBoardsForUser(userName) {
       const user = await UsersRepository.getUser(userName)
       const { ownedBoards } = user
 

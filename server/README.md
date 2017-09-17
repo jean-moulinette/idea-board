@@ -14,7 +14,7 @@
 
   Then, run a mongo daemon on the same host and port that you provided in the idea-project's `.config` file.
 
-  **If you want to be able to run tests, don't forget to provide a test database in the `.config` file under the `TEST_DATABASE_NAME` variable.**
+  **If you want to be able to run tests, don't forget to provide these keys (`TEST_DATABASE_NAME`, `TEST_SERVER_PORT`) in the `.config` file.**
 
   Once your server is running, run the following npm scripts to bootstrap the mongodb database.
 
@@ -32,5 +32,8 @@
   Then, run the following command to start tests.
 
   ```
-    npm run test
+    npm run test:unit:watch
+    npm run test:integration:watch
   ```
+
+  Note that you can run your test watchers concurently while your development app is still running.
