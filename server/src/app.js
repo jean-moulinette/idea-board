@@ -1,7 +1,7 @@
-const { bootstrapServer } = require('src/bootstrap/server')
+const { ideaBoard } = require('src/bootstrap/server')
 
-async function main() {
-  bootstrapServer()
+function main() {
+  ideaBoard.startServer()
 }
 
 main()

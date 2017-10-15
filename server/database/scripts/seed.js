@@ -1,12 +1,7 @@
-const readline = require('readline')
 const { MongoClient } = require('mongodb')
 
 const { config } = require('src/utils/config')
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
+const { TEST_USER, BOARDS_SAMPLE, USER } = require('../constants')
 
 main()
 
@@ -23,15 +18,14 @@ async function main() {
 
   try {
     const db = await MongoClient.connect(connection)
-    const superUserName = await promptLogin()
-    await seedDatabase(db, superUserName)
+    await seedDatabase(db, USER.login)
     console.log('\nSuccessfully seeded database')
   } catch (e) {
     handlePromiseRejection(e)
   }
 
   if (!TEST_DATABASE_NAME) {
-    throw new Error('Unable to find test database name. You won\'t be able to run tests')
+    throw new Error('Unable to find TEST_DATABASE_NAME correct value in \'.config\' fime. You won\'t be able to run tests')
   }
 
   // Test database seed
@@ -39,7 +33,7 @@ async function main() {
 
   try {
     const db = await MongoClient.connect(testConnection)
-    await seedDatabase(db, 'test-super-user')
+    await seedDatabase(db, TEST_USER.login)
     console.log('\nSuccessfully seeded test database')
   } catch (e) {
     handlePromiseRejection(e)
@@ -56,7 +50,6 @@ async function seedDatabase(db, user) {
     boardsCollection,
     usersCollection,
     userName: user,
-    boardName: `${user}'s board`,
   })
 
   return db.close()
@@ -65,24 +58,6 @@ async function seedDatabase(db, user) {
 function getCollection(name, db) {
   return db.collection(name)
 }
-
-function promptLogin() {
-  return new Promise((resolve, reject) => {
-    const question = 'Choose a login for your super user: '
-    rl.question(question, (login) => {
-      const errorMsg = 'You must provide a login for your first user, operation avorted :('
-      if (!login) {
-        reject(errorMsg)
-      }
-      resolve(login)
-      rl.close()
-    })
-  })
-    .catch((reason) => {
-      throw new Error(reason)
-    })
-}
-
 
 function insertUser(collection, userName) {
   return collection.insertOne({
@@ -97,39 +72,21 @@ function insertBoardForUser({
   boardsCollection,
   usersCollection,
   userName,
-  boardName,
 }) {
-  const ideas = []
-
-  for (let i = 0; i < 5; i += 1) {
-    ideas.push(generateIdea())
-  }
-
-  return boardsCollection.insertOne({
-    name: boardName,
-    ideas,
-  })
+  return boardsCollection.insertMany(BOARDS_SAMPLE)
     .then((opResult) => {
-      const { insertedId } = opResult
-
+      const { insertedIds } = opResult
       const documentQuery = {
         name: userName,
       }
       const updateStatement = {
         $set: {
-          ownedBoards: [insertedId],
+          ownedBoards: insertedIds,
         },
       }
 
       return usersCollection.findOneAndUpdate(documentQuery, updateStatement)
     })
-}
-
-function generateIdea() {
-  return {
-    text: 'Hello my friend',
-    creationDate: new Date().toISOString(),
-  }
 }
 
 function handlePromiseRejection(reason) {

@@ -5,6 +5,7 @@ exports.responseFactory = response => ({
   },
 
   sendJSON: function(data) {
+    response.setHeader('Content-Type', 'application/json')
     response.send(JSON.stringify(data))
   },
 
