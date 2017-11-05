@@ -11,8 +11,8 @@
   "scripts": {
     "start": "env NODE_PATH=./ supervisor -n exit src/app.js",
     "lint": "eslint src --env node; exit 0",
-    "test:unit:watch": "env NODE_ENV=test mocha --watch --recursive --reporter dot ./src/**/*.spec.js",
-    "test:integration:watch": "env NODE_ENV=test mocha --watch --recursive --timeout 4000 --reporter dot ./tests/index.spec.js ./tests/**/*.spec.js",
+    "test:unit:watch": "env NODE_ENV=test NODE_PATH=./ mocha --watch --recursive --reporter dot ./src/**/*.spec.js",
+    "test:integration:watch": "env NODE_ENV=test NODE_PATH=./ mocha --watch --recursive --timeout 4000 --reporter dot ./tests/index.spec.js ./tests/**/*.spec.js",
     "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js",
     "db:seed": "env NODE_PATH=./ node database/scripts/seed.js"
   },
