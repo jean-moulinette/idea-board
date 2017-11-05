@@ -23,7 +23,6 @@
     "webpack": "^3.7.1"
   },
   "dependencies": {
-    "dev": "^0.1.3",
     "html-webpack-plugin": "^2.29.0"
   }
 }
