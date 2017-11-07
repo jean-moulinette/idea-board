@@ -1,3 +1,5 @@
+const { HTTP_METHOD } = require('src/bootstrap/router/constants')
+
 /*
  * @function routeFactory
  *
@@ -7,8 +9,14 @@
  *
  * @return {string} A good string
  */
-exports.routeFactory = (method, path, handler) => ({
+const routeFactory = (method, path, handler) => ({
   method,
   path,
   handler,
 })
+
+module.exports = {
+  getRoute: routeFactory.bind(null, HTTP_METHOD.GET),
+  postRoute: routeFactory.bind(null, HTTP_METHOD.POST),
+  putRoute: routeFactory.bind(null, HTTP_METHOD.PUT),
+}
