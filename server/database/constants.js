@@ -1,10 +1,13 @@
-const TEST_USER = {
-  login: 'testuser',
-}
+const SUPER_USER_LOGIN = 'superuser'
+const TEST_USER_LOGIN = 'testuser'
 
-const USER = {
-  login: 'superuser',
-}
+const USERS = [
+  { name: SUPER_USER_LOGIN },
+]
+
+const TEST_USERS = [
+  { name: TEST_USER_LOGIN },
+]
 
 const IDEAS_SAMPLE = [
   generateIdea(),
@@ -28,7 +31,9 @@ function generateIdea() {
   }
 }
 
-exports.TEST_USER = TEST_USER
-exports.USER = USER
+exports.SUPER_USER_LOGIN = SUPER_USER_LOGIN
+exports.TEST_USER_LOGIN = TEST_USER_LOGIN
+exports.TEST_USERS = TEST_USERS
+exports.USERS = USERS
 exports.BOARDS_SAMPLE = BOARDS_SAMPLE
 exports.IDEAS_SAMPLE = IDEAS_SAMPLE

@@ -1,7 +1,7 @@
 const { expect } = require('chai')
 
 const { config } = require('src/utils/config')
-const { buildDatabaseConn } = require('./database-utils')
+const { buildDatabaseConn } = require('./db-utils')
 
 describe('database-utils', () => {
   const {

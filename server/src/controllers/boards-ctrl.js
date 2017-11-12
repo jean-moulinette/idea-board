@@ -8,7 +8,7 @@ exports.getBoardsForUser = async (response, requestData) => {
   try {
     boards = await BoardsRepository.getOwnedBoardsForUser(user)
   } catch (e) {
-    throw new Error('Unable to find boards for this user')
+    throw new Error(e)
   }
 
   response.sendJSON(boards)

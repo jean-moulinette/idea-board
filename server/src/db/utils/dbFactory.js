@@ -1,9 +1,9 @@
 const {
   buildDatabaseConn,
   getDatabaseSession,
-} = require('./database-utils')
+} = require('./db-utils')
 
-function databaseFactory() {
+function dbFactory() {
   const core = {
     db: null,
     conn: null,
@@ -32,7 +32,6 @@ function databaseFactory() {
     async findIn(collectionName, query) {
       const collection = await findCollection(collectionName)
       const cursor = await collection.find(query)
-
       try {
         return await cursor.toArray()
       } catch (e) {
@@ -48,4 +47,4 @@ function databaseFactory() {
   }
 }
 
-module.exports.Database = databaseFactory()
+module.exports.Database = dbFactory()

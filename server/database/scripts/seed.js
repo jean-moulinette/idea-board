@@ -1,7 +1,8 @@
 const { MongoClient } = require('mongodb')
 
 const { config } = require('src/utils/config')
-const { TEST_USER, BOARDS_SAMPLE, USER } = require('../constants')
+const { BOARDS_SAMPLE, TEST_USER_LOGIN, SUPER_USER_LOGIN } = require('../constants')
+const { BOARDS_COLLECTION, USERS_COLLECTION } = require('src/repositories/constants')
 
 main()
 
@@ -18,7 +19,7 @@ async function main() {
 
   try {
     const db = await MongoClient.connect(connection)
-    await seedDatabase(db, USER.login)
+    await seedDatabase(db, SUPER_USER_LOGIN)
     console.log('\nSuccessfully seeded database')
   } catch (e) {
     handlePromiseRejection(e)
@@ -33,23 +34,23 @@ async function main() {
 
   try {
     const db = await MongoClient.connect(testConnection)
-    await seedDatabase(db, TEST_USER.login)
+    await seedDatabase(db, TEST_USER_LOGIN)
     console.log('\nSuccessfully seeded test database')
   } catch (e) {
     handlePromiseRejection(e)
   }
 }
 
-async function seedDatabase(db, user) {
-  const usersCollection = await getCollection('users', db)
-  const boardsCollection = await getCollection('boards', db)
+async function seedDatabase(db, userName) {
+  const usersCollection = await getCollection(USERS_COLLECTION, db)
+  const boardsCollection = await getCollection(BOARDS_COLLECTION, db)
 
-  await insertUser(usersCollection, user)
+  await insertUser(usersCollection, userName)
 
   await insertBoardForUser({
     boardsCollection,
     usersCollection,
-    userName: user,
+    userName,
   })
 
   return db.close()

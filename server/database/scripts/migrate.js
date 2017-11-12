@@ -1,6 +1,8 @@
 const { MongoClient } = require('mongodb')
 
 const { config } = require('src/utils/config')
+const { REPOSITORIES_COLLECTIONS } = require('src/repositories/constants')
+const { createUniqueDocumentIndex } = require('../model-utils')
 
 main()
 
@@ -17,9 +19,9 @@ async function main() {
 
   try {
     const db = await MongoClient.connect(connection)
-    console.log('\nSuccessfully connected to database')
+    console.log('\nSuccessfully connected to idea-board database')
     await migrateDatabase(db)
-    console.log(`\nSuccessfully created ${DATABASE_NAME} database\n`)
+    console.log(`Successfully created ${DATABASE_NAME} database`)
   } catch (e) {
     handlePromiseRejection(e)
   }
@@ -35,7 +37,7 @@ async function main() {
     const db = await MongoClient.connect(testConnection)
     console.log('\nSuccessfully connected to test database')
     await migrateDatabase(db)
-    console.log(`\nSuccessfully created ${TEST_DATABASE_NAME} database\n`)
+    console.log(`Successfully created ${TEST_DATABASE_NAME} database`)
   } catch (e) {
     handlePromiseRejection(e)
   }
@@ -45,40 +47,56 @@ async function migrateDatabase(db) {
   // Dropping before any operation for a proper reset
   await dropDatabase(db)
 
-  await createUsersCollection(db)
-  console.log('Successfully created users collection')
+  const collectionsCreation = REPOSITORIES_COLLECTIONS
+    .map(collection => db.createCollection(collection.name))
 
-  await createBoardsCollection(db)
-  console.log('Successfully created boards collection')
+  try {
+    await Promise.all([
+      ...collectionsCreation,
+    ])
+  } catch (e) {
+    await db.close()
+    throw new Error(e)
+  }
+
+  const constraintsCreation = REPOSITORIES_COLLECTIONS
+    .map(generateConstraintsForCollection(db))
+
+  try {
+    await Promise.all([
+      ...constraintsCreation,
+    ])
+  } catch (e) {
+    await db.close()
+    throw new Error(e)
+  }
 
   return db.close()
 }
 
+function generateConstraintsForCollection(db) {
+  return async (collectionInfo) => {
+    const { constraints, name } = collectionInfo
+    const collection = await db.collection(name)
+
+    if (constraints && constraints.length > 0) {
+      const constraintsCreation = constraints.map(constraint => createUniqueDocumentIndex({
+        collection,
+        name: constraint.name,
+        field: constraint.field,
+      }))
+
+      return Promise.all([
+        ...constraintsCreation,
+      ])
+    }
+
+    return null
+  }
+}
+
 function dropDatabase(db) {
   return db.dropDatabase()
-    .catch(handlePromiseRejection)
-}
-
-function createUsersCollection(db) {
-  return db.createCollection('users')
-    .then(usersCollection => createUniqueDocumentIndex({
-      collection: usersCollection,
-      name: 'userNameUnique',
-      field: 'name',
-    }))
-    .catch(handlePromiseRejection)
-}
-
-function createUniqueDocumentIndex({
-  collection,
-  name,
-  field,
-}) {
-  return collection.createIndex(name, { [field]: 1 }, { unique: true })
-}
-
-function createBoardsCollection(db) {
-  return db.createCollection('boards')
     .catch(handlePromiseRejection)
 }
 
