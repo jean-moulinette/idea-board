@@ -3,7 +3,7 @@ const express = require('express')
 const { json } = require('body-parser')
 
 const { config } = require('src/utils/config')
-const { Database } = require('src/model/utils/databaseFactory')
+const { Database } = require('src/db/utils/dbFactory')
 const { requestFactory } = require('src/bootstrap/server/utils/requestFactory')
 const { responseFactory } = require('src/bootstrap/server/utils/responseFactory')
 const { bootstrapRouter } = require('src/bootstrap/router/')

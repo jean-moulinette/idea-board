@@ -1,4 +1,4 @@
-const { Database } = require('src/model/utils/databaseFactory')
+const { Database } = require('src/db/utils/dbFactory')
 const { USERS_COLLECTION } = require('./constants')
 
 function UsersRepository() {
