@@ -2,7 +2,6 @@ require('colors')
 const express = require('express')
 const { json } = require('body-parser')
 
-const { config } = require('src/utils/config')
 const { Database } = require('src/db/utils/dbFactory')
 const { requestFactory } = require('src/bootstrap/server/utils/requestFactory')
 const { responseFactory } = require('src/bootstrap/server/utils/responseFactory')
@@ -17,8 +16,8 @@ exports.serverFactory = () => ({
   startServer() {
     const { env: { NODE_ENV } } = process
     this.port = NODE_ENV === 'test'
-      ? config.TEST_SERVER_PORT
-      : config.SERVER_PORT || process.env.PORT
+      ? process.env.TEST_SERVER_PORT
+      : process.env.SERVER_PORT || process.env.PORT
 
     this.initializeDatabase()
     this.configureServer()
@@ -37,18 +36,17 @@ exports.serverFactory = () => ({
   configureServer: function() {
     bootstrapRouter(this)
     this.addMiddleWare(json())
-    this.addMiddleWare(this.handleForbiddenRoutes)
+    this.addMiddleWare(this.handleNotFound)
   },
 
   addMiddleWare: function(middleware) {
     this.app.use(middleware)
   },
 
-  handleForbiddenRoutes: function(req, res) {
+  handleNotFound: function(req, res) {
     const response = responseFactory(res)
 
-    response.setStatus(404)
-    response.send('Nope')
+    response.sendError(new Error('Not found', 404))
   },
 
   listen: function() {
