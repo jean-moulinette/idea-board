@@ -1,105 +1,54 @@
-const { MongoClient } = require('mongodb')
+require('dotenv').config()
+const { spawn } = require('child_process')
 
-const { config } = require('src/utils/config')
-const { REPOSITORIES_COLLECTIONS } = require('src/repositories/constants')
-const { createUniqueDocumentIndex } = require('../model-utils')
+const constraints = require('../seeds/constraints.json')
+const { getDatabaseHost, createConstraints, getDatabaseURI } = require('./utils')
 
 main()
+  .then(() => console.log('Successfully migrated'))
+  .catch(e => console.log(e))
 
 async function main() {
-  const {
-    DATABASE_HOST,
-    DATABASE_PORT,
-    DATABASE_NAME,
-    TEST_DATABASE_NAME,
-  } = config
+  const { TEST_DATABASE_NAME, DATABASE_NAME } = process.env
 
-  // Database bootstrap
-  const connection = `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`
+  const databaseHost = getDatabaseHost()
 
-  try {
-    const db = await MongoClient.connect(connection)
-    console.log('\nSuccessfully connected to idea-board database')
-    await migrateDatabase(db)
-    console.log(`Successfully created ${DATABASE_NAME} database`)
-  } catch (e) {
-    handlePromiseRejection(e)
-  }
+  const developementURI = getDatabaseURI(DATABASE_NAME)
+  const testURI = getDatabaseURI(TEST_DATABASE_NAME)
 
-  if (!TEST_DATABASE_NAME) {
-    throw new Error('Unable to find test database name. You won\'t be able to run tests')
-  }
+  await Promise.all(triggerImport(databaseHost, process.env.DATABASE_NAME, 'developement'))
+  await Promise.all(triggerImport(databaseHost, process.env.TEST_DATABASE_NAME, 'test'))
 
-  // Test database bootstrap
-  const testConnection = `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${TEST_DATABASE_NAME}`
-
-  try {
-    const db = await MongoClient.connect(testConnection)
-    console.log('\nSuccessfully connected to test database')
-    await migrateDatabase(db)
-    console.log(`Successfully created ${TEST_DATABASE_NAME} database`)
-  } catch (e) {
-    handlePromiseRejection(e)
-  }
+  await createConstraints(developementURI, constraints)
+  await createConstraints(testURI, constraints)
 }
 
-async function migrateDatabase(db) {
-  // Dropping before any operation for a proper reset
-  await dropDatabase(db)
+function triggerImport(databaseURI, databaseName, environement) {
+  const importArguments = [
+    '--drop',
+    '--db',
+    databaseName,
+    '--host',
+    databaseURI,
+  ]
 
-  const collectionsCreation = REPOSITORIES_COLLECTIONS
-    .map(collection => db.createCollection(collection.name))
+  const importFiles = [
+    `database/seeds/${environement}/users.json`,
+    `database/seeds/${environement}/boards.json`,
+  ]
 
-  try {
-    await Promise.all([
-      ...collectionsCreation,
-    ])
-  } catch (e) {
-    await db.close()
-    throw new Error(e)
-  }
-
-  const constraintsCreation = REPOSITORIES_COLLECTIONS
-    .map(generateConstraintsForCollection(db))
-
-  try {
-    await Promise.all([
-      ...constraintsCreation,
-    ])
-  } catch (e) {
-    await db.close()
-    throw new Error(e)
-  }
-
-  return db.close()
+  return importFiles.map(file => createSpawnImportProcess(importArguments, file))
 }
 
-function generateConstraintsForCollection(db) {
-  return async (collectionInfo) => {
-    const { constraints, name } = collectionInfo
-    const collection = await db.collection(name)
-
-    if (constraints && constraints.length > 0) {
-      const constraintsCreation = constraints.map(constraint => createUniqueDocumentIndex({
-        collection,
-        name: constraint.name,
-        field: constraint.field,
-      }))
-
-      return Promise.all([
-        ...constraintsCreation,
-      ])
-    }
-
-    return null
-  }
-}
-
-function dropDatabase(db) {
-  return db.dropDatabase()
-    .catch(handlePromiseRejection)
-}
-
-function handlePromiseRejection(reason) {
-  throw new Error(reason)
+function createSpawnImportProcess(importArgs, fileName) {
+  return new Promise((resolve, reject) => {
+    const importArgsWithFile = [
+      ...importArgs,
+      '--file',
+      fileName,
+    ]
+    const importProcess = spawn('mongoimport', importArgsWithFile)
+    importProcess.on('exit', () => resolve())
+    importProcess.on('error', e => reject(e))
+  })
 }

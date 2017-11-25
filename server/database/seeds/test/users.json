@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5a0822483e5bab103c5b4347"},"name":"testuser","email":"email@domain.com","password":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","emailVerified":true,"ownedBoards":[{"$oid":"5a0822483e5bab103c5b4346"}],"guestBoards":[]}

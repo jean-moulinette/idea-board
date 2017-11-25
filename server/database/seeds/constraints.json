@@ -1,0 +1,18 @@
+[
+  {
+    "collection": "boards",
+    "constraints": []
+  },
+  {
+    "collection": "users",
+    "constraints": [
+      {
+        "field": "name",
+        "options": {
+          "name": "userNameUnique",
+          "unique": true
+        }
+      }
+    ]
+  }
+]
