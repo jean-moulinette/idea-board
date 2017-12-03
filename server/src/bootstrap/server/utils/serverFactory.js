@@ -34,19 +34,12 @@ exports.serverFactory = () => ({
   },
 
   configureServer: function() {
-    bootstrapRouter(this)
     this.addMiddleWare(json())
-    this.addMiddleWare(this.handleNotFound)
+    bootstrapRouter(this)
   },
 
   addMiddleWare: function(middleware) {
     this.app.use(middleware)
-  },
-
-  handleNotFound: function(req, res) {
-    const response = responseFactory(res)
-
-    response.sendError(new Error('Not found', 404))
   },
 
   listen: function() {

@@ -19,4 +19,5 @@ module.exports = {
   getRoute: routeFactory.bind(null, HTTP_METHOD.GET),
   postRoute: routeFactory.bind(null, HTTP_METHOD.POST),
   putRoute: routeFactory.bind(null, HTTP_METHOD.PUT),
+  allRoute: routeFactory.bind(null, HTTP_METHOD.ALL),
 }

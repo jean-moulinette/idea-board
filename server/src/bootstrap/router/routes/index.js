@@ -1,3 +1,4 @@
+const { baseApi } = require('./api')
 const { ideasRoutes } = require('./api/ideas/ideasRoutes')
 const { boardsRoutes } = require('./api/boards/boardsRoutes')
 const { usersRoutes } = require('./api/users/usersRoutes')
@@ -7,5 +8,6 @@ exports.default = {
   ideasRoutes,
   boardsRoutes,
   usersRoutes,
+  baseApi,
   viewsRoutes,
 }

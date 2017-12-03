@@ -17,4 +17,11 @@ exports.responseFactory = response => ({
     response.status(status)
   },
 
+  sendError: function(e, status) {
+    const error = {
+      details: e.message,
+    }
+    response.status(status)
+    response.send(JSON.stringify(error))
+  },
 })

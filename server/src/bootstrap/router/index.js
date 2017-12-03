@@ -1,10 +1,10 @@
-const { attachRoutes } = require('src/bootstrap/router/utils/router-utils')
+const { attachRoutes } = require('./utils/router-utils')
 const {
   ideasRoutes,
   boardsRoutes,
   usersRoutes,
   viewsRoutes,
-} = require('src/bootstrap/router/routes').default
+} = require('./routes').default
 
 const apiRoutes = [
   ...usersRoutes,

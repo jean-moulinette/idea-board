@@ -1,6 +1,12 @@
 exports.HTTP_METHOD = {
   GET: 'GET',
   POST: 'POST',
+  HEAD: 'HEAD',
+  CONNECT: 'CONNECT',
+  OPTIONS: 'OPTIONS',
+  TRACE: 'TRACE',
+  PATCH: 'PATCH',
+  DELETE: 'DELETE',
   PUT: 'PUT',
   ALL: 'ALL',
 }
