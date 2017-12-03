@@ -1,4 +1,4 @@
-const { BoardsRepository } = require('src/repositories/boards-repo')
+const { BoardsRepository } = require('src/repositories/boards/boards-repo')
 
 exports.getBoardsForUser = async (response, requestData) => {
   const { user } = requestData
@@ -8,7 +8,8 @@ exports.getBoardsForUser = async (response, requestData) => {
   try {
     boards = await BoardsRepository.getOwnedBoardsForUser(user)
   } catch (e) {
-    throw new Error(e)
+    response.setStatus(404)
+    response.send(e.message)
   }
 
   response.sendJSON(boards)
