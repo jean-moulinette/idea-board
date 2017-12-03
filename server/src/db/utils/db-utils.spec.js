@@ -1,6 +1,4 @@
 const { expect } = require('chai')
-
-const { config } = require('src/utils/config')
 const { buildDatabaseConn } = require('./db-utils')
 
 describe('database-utils', () => {
@@ -8,7 +6,7 @@ describe('database-utils', () => {
     DATABASE_HOST,
     DATABASE_PORT,
     TEST_DATABASE_NAME,
-  } = config
+  } = process.env
 
   it('Should properly build database connection URI', () => {
     const conn = buildDatabaseConn()

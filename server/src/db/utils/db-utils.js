@@ -1,5 +1,4 @@
 const { MongoClient } = require('mongodb')
-const { config } = require('src/utils/config')
 
 exports.buildDatabaseConn = function () {
   const {
@@ -7,8 +6,8 @@ exports.buildDatabaseConn = function () {
     DATABASE_PORT,
     DATABASE_NAME,
     TEST_DATABASE_NAME,
-  } = config
-  const { env: { NODE_ENV } } = process
+    NODE_ENV,
+  } = process.env
 
   const databaseName = NODE_ENV === 'test'
     ? TEST_DATABASE_NAME

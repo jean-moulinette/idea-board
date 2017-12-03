@@ -13,12 +13,12 @@
     "lint": "eslint src --env node; exit 0",
     "test:unit:watch": "env NODE_ENV=test NODE_PATH=./ mocha --watch --recursive --reporter dot ./src/**/*.spec.js",
     "test:integration:watch": "env NODE_ENV=test NODE_PATH=./ mocha --watch --recursive --timeout 4000 --reporter dot ./tests/index.spec.js ./tests/**/*.spec.js",
-    "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js",
-    "db:seed": "env NODE_PATH=./ node database/scripts/seed.js"
+    "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
     "colors": "^1.1.2",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "mongodb": "^2.2.29"
   },
