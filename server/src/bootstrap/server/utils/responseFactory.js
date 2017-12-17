@@ -1,27 +1,38 @@
 exports.responseFactory = response => ({
 
   send: function(data) {
-    response.send(data)
+    if (!this.isResponseSent()) response.send(data)
   },
 
   sendJSON: function(data) {
-    response.setHeader('Content-Type', 'application/json')
-    response.send(JSON.stringify(data))
+    if (!this.isResponseSent()) {
+      this.setHeader('Content-Type', 'application/json')
+      this.send(JSON.stringify(data))
+    }
   },
 
   sendFile: function(file, options) {
-    response.sendFile(file, options)
+    if (!this.isResponseSent) response.sendFile(file, options)
   },
 
   setStatus: function(status) {
-    response.status(status)
+    if (!this.isResponseSent()) response.status(status)
+  },
+
+  setHeader: function(key, value) {
+    if (!this.isResponseSent()) response.setHeader(key, value)
   },
 
   sendError: function(e, status) {
     const error = {
       details: e.message,
     }
-    response.status(status)
-    response.send(JSON.stringify(error))
+
+    this.setStatus(status)
+    this.send(JSON.stringify(error))
+  },
+
+  isResponseSent: function() {
+    return response.headersSent === true
   },
 })
