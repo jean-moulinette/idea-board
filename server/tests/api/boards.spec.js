@@ -5,7 +5,7 @@ const { expect } = require('chai')
 const { ideaBoardApp } = require('src/bootstrap/server')
 const { BOARDS_BASE_ROUTE } = require('src/bootstrap/router/routes/api/boards/constants')
 
-const { TEST_USER, EMPTY_BOARD_USER } = require('database/constants')
+const { TEST_USER, EMPTY_BOARD_USER } = require('database/seeds/test/constants')
 
 chai.use(chaiHttp)
 
