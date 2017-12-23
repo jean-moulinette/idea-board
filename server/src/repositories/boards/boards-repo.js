@@ -1,5 +1,5 @@
 const { Database } = require('src/db/utils/dbFactory')
-const { BOARDS_COLLECTION } = require('src/db/boards/constants')
+const { BOARDS_COLLECTION } = require('src/db/board/constants')
 const { UsersRepository } = require('src/repositories/user/users-repo')
 
 function BoardsRepository() {
