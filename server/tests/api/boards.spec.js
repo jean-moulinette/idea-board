@@ -14,7 +14,7 @@ describe('boards API integration tests', () => {
     chai.request(ideaBoardApp)
       .get(BOARDS_BASE_ROUTE)
       .query({
-        user: TEST_USER,
+        user: TEST_USER.name,
       })
       .end((err, res) => {
         const { body, statusCode } = res
