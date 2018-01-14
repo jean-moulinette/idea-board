@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module":"commonjs",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "target":"es5",
+    "outDir": "./dist",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowJs": true,
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
