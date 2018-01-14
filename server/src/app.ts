@@ -1,7 +1,9 @@
-require('dotenv').config()
-const { ideaBoard } = require('src/bootstrap/server')
+import * as dotenv from 'dotenv'
+import ideaBoardServer from 'src/bootstrap/server'
 
 function main() {
+  dotenv.config()
+
   // Global error handler for uncatched rejected promises
   if (process.env.NODE_ENV !== 'production') {
     process.on('unhandledRejection', (reason, rejectedPromise) => {
@@ -10,7 +12,7 @@ function main() {
     })
   }
 
-  ideaBoard.startServer()
+  ideaBoardServer.startServer()
 }
 
 main()
