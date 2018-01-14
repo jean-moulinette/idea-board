@@ -1,6 +1,6 @@
-const { MongoClient } = require('mongodb')
+import { MongoClient } from 'mongodb'
 
-exports.buildDatabaseConn = function () {
+export function buildDatabaseConn() {
   const {
     DATABASE_HOST,
     DATABASE_PORT,
@@ -16,7 +16,7 @@ exports.buildDatabaseConn = function () {
   return `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${databaseName}`
 }
 
-exports.getDatabaseSession = async function(conn) {
+export async function getDatabaseSession(conn: string) {
   try {
     return await MongoClient.connect(conn)
   } catch (e) {

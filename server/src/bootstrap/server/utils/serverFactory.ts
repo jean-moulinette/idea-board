@@ -9,7 +9,6 @@ import {
 import { Server } from 'http'
 import { json } from 'body-parser'
 
-import { Database } from 'src/db/utils/dbFactory'
 import RequestFactory from 'src/bootstrap/server/utils/requestFactory'
 import ResponseFactory from 'src/bootstrap/server/utils/responseFactory'
 import { bootstrapRouter } from 'src/bootstrap/router/'
@@ -31,7 +30,6 @@ export default class ServerFactory {
       : process.env.SERVER_PORT || process.env.PORT
 
     this.app = express()
-    this.initializeDatabase()
     this.configureServer()
 
     this.server = this.listen()
@@ -39,10 +37,6 @@ export default class ServerFactory {
 
   public stopServer() {
     this.server.close()
-  }
-
-  private initializeDatabase() {
-    Database.connect()
   }
 
   private configureServer() {

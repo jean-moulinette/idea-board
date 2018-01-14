@@ -1,14 +1,34 @@
 const { Database } = require('../utils/dbFactory')
 const { USERS_COLLECTION } = require('./constants')
 
-module.exports = class User {
-  constructor(user) {
+export interface IdeaBoardUser { // TODO replace this interface with a user entity subClass
+  id: string
+  name: string
+  email: string
+  emailVerified: boolean
+  ownedBoards: any[] // TODO Replace with real interface
+  guestBoards: any[] // TODO Replace with real interface
+}
+
+export default class User {
+  private id: string
+  private name: string
+  private email: string
+  private emailVerified: boolean
+  private ownedBoards: any[] // TODO Replace with real interface
+  private guestBoards: any[] // TODO Replace with real interface
+  
+  public hydrated: boolean
+
+  public constructor(user: IdeaBoardUser) {
+    this.hydrated = false
+
     if (user) {
       this.hydrate(user)
     }
   }
 
-  static async findByName(name) {
+  public static async findByName(name: string) {
     const user = await Database.findOneIn(
       USERS_COLLECTION,
       {
@@ -19,7 +39,7 @@ module.exports = class User {
     return user
   }
 
-  static async findById(userId) {
+  public static async findById(userId: string) {
     const query = {
       id: userId,
     }
@@ -32,7 +52,7 @@ module.exports = class User {
     return user
   }
 
-  hydrate(user) {
+  public hydrate(user: IdeaBoardUser) {
     const {
       id,
       name,
