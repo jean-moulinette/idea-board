@@ -18,7 +18,7 @@ interface SendFileOptions {
 export default class ResponseFactory {
   private response: Response
 
-  constructor(response: Response) {
+  public constructor(response: Response) {
     this.response = response
   }
 

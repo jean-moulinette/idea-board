@@ -39,25 +39,7 @@ export default class ServerFactory {
     this.server.close()
   }
 
-  private configureServer() {
-    this.addMiddleWare(json())
-    bootstrapRouter(this)
-  }
-
-  private addMiddleWare(middleware: RequestHandler) {
-    this.app.use(middleware)
-  }
-
-  listen(): Server {
-    const port = this.port
-    const successMessage = `Server running on port: ${port}`.green
-
-    return this.app.listen(port, () => {
-      console.log(successMessage)
-    })
-  }
-
-  attachRouteHandler(
+  public attachRouteHandler(
     httpMethod: HttpMethodNameLower,
     path: RoutePath,
     onRequest: RouteHandler
@@ -70,4 +52,21 @@ export default class ServerFactory {
     })
   }
 
+  private configureServer() {
+    this.addMiddleWare(json())
+    bootstrapRouter(this)
+  }
+
+  private addMiddleWare(middleware: RequestHandler) {
+    this.app.use(middleware)
+  }
+
+  private listen(): Server {
+    const port = this.port
+    const successMessage = `Server running on port: ${port}`.green
+
+    return this.app.listen(port, () => {
+      console.log(successMessage)
+    })
+  }
 }
