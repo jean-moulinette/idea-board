@@ -17,7 +17,7 @@ export default class RequestFactory {
     const dataResolver = this.dataResolverFactory()
 
     return dataResolver[httpMethod]
-      ? dataResolver[httpMethod]()
+      ? dataResolver[httpMethod]
       : {}
   }
 

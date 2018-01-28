@@ -4,14 +4,14 @@ import ideaBoardRoutes from './routes'
 
 const {
   ideasRoutes,
-  // boardsRoutes,
+  boardsRoutes,
   // usersRoutes,
   viewsRoutes,
 } = ideaBoardRoutes
 
 const apiRoutes = [
   // ...usersRoutes,
-  // ...boardsRoutes,
+  ...boardsRoutes,
   ...ideasRoutes,
 ]
 

@@ -8,7 +8,6 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "outDir": "./dist",
-    "noUnusedParameters": true,
     "allowJs": true,
     "pretty": true,
 		"lib": [

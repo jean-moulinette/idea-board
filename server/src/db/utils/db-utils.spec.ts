@@ -1,5 +1,5 @@
-const { expect } = require('chai')
-const { buildDatabaseConn } = require('./db-utils')
+import { expect } from 'chai'
+import { buildDatabaseConn } from './db-utils'
 
 describe('database-utils', () => {
   const {
