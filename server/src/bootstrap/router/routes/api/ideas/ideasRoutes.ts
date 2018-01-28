@@ -1,6 +1,6 @@
 import ResponseFactory from 'src/bootstrap/server/utils/responseFactory'
 
-import { getRoute, postRoute } from '../../utils/routeFactory.js'
+import { getRoute, postRoute } from '../../utils/routeFactory'
 import { IDEA_BASE_ROUTE } from './constants'
 
 export default [
