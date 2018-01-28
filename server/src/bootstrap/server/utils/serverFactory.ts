@@ -47,7 +47,6 @@ export default class ServerFactory {
     this.app[httpMethod](path, (req: Request, res: Response) => {
       const response = new ResponseFactory(res)
       const request = new RequestFactory(req)
-
       onRequest(response, request.fetchData(httpMethod))
     })
   }
