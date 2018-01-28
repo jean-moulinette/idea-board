@@ -1,4 +1,5 @@
 import { Db } from 'mongodb'
+import * as dotenv from 'dotenv'
 
 import {
   buildDatabaseConn,
@@ -20,7 +21,9 @@ class DbFactory {
       db: null,
       conn: null,
     }
-
+    
+    dotenv.config()
+    
     this.connect()
   }
   
