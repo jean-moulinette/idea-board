@@ -28,7 +28,7 @@ export default class User {
     }
   }
 
-  public static async findByName(name: string) {
+  public static async findByName(name: string): Promise<IdeaBoardUser> {
     const user = await Database.findOneIn(
       USERS_COLLECTION,
       {
