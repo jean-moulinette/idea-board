@@ -11,7 +11,11 @@ export default class BoardsRepository {
     try {
       user = await UsersRepository.getUserInfos(userName)
     } catch (e) {
-      throw new Error(e)
+      throw e
+    }
+
+    if (!user) {
+      return null;
     }
 
     const { ownedBoards } = user
@@ -24,10 +28,10 @@ export default class BoardsRepository {
     // TODO REPLACE WITH BOARDS DB MODEL OBJECT + HANDLE ERROR
     try {
       userBoards = await Database.findIn(BOARDS_COLLECTION, query)
-    } catch (e) {
-      throw new Error(e)
+    } catch (e){
+      throw e
     }
-
+    
     return userBoards
   }
 }

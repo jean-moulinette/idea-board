@@ -1,5 +1,5 @@
-const { Database } = require('../utils/dbFactory')
-const { USERS_COLLECTION } = require('./constants')
+import Database from '../utils/dbFactory'
+import { USERS_COLLECTION } from './constants'
 
 export interface IdeaBoardUser { // TODO replace this interface with a user entity subClass
   id: string
@@ -32,7 +32,7 @@ export default class User {
     const user = await Database.findOneIn(
       USERS_COLLECTION,
       {
-        name: name,
+        name,
       }
     )
 

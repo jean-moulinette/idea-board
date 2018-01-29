@@ -29,34 +29,42 @@ describe('boards API integration tests', () => {
       })
   })
 
-  it('Should return 404 if user does not exist', () => {
+  it('Should return 422 when request data is malformed', (done) => {
+    chai.request(IdeaBoardServer.app)
+    .get(BOARDS_BASE_ROUTE)
+    .query({})
+    .end((_, res) => {
+      const { status } = res
+
+      expect(status).to.equal(422)
+      done()
+    })
+  })
+
+  it('Should return 404 if user does not exist', (done) => {
     chai.request(IdeaBoardServer.app)
     .get(BOARDS_BASE_ROUTE)
     .query({
       user: 'your-mother',
     })
-    .end((err, res) => {
-      if (err)
-        throw err
-
+    .end((_, res) => {
       const { status } = res
 
       expect(status).to.equal(404)
+      done()
     })
   })
 
-  it('Should return 404 if user got no boards', () => {
+  it('Should return 404 if user got no boards', (done) => {
     chai.request(IdeaBoardServer.app)
       .get(BOARDS_BASE_ROUTE)
       .query({
         user: EMPTY_BOARD_USER,
       })
-      .end((err, res) => {
-        if (err)
-          throw err
-
+      .end((_, res) => {
         const { status } = res
         expect(status).to.equal(404)
+        done()
       })
   })
 })

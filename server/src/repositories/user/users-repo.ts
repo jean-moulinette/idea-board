@@ -1,4 +1,3 @@
-import { ERRORS } from './constants'
 import User, { IdeaBoardUser } from 'src/db/user'
 
 export default class UsersRepository {
@@ -8,7 +7,7 @@ export default class UsersRepository {
     try {
       user = await User.findByName(name)
     } catch (e) {
-      throw new Error(ERRORS.USER_NOT_FOUND)
+      throw e
     }
 
     return user

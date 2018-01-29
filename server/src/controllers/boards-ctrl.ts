@@ -2,28 +2,35 @@ import BoardsRepository from 'src/repositories/boards/boards-repo'
 import ResponseFactory from 'src/bootstrap/server/utils/responseFactory'
 
 type GetBoardForUserData = {
-  user: string
+  user?: string
 }
 
 export async function getBoardsForUser(
   response: ResponseFactory,
   requestData: GetBoardForUserData
 ) {
-  const { user } = requestData
+  let boards = null;
 
-  let boards
+  if (!requestData.user) {
+    const errorMessage = 'Unable to find "user" in query params'
+    response.setStatus(422)
+    response.send(errorMessage)
+  }
 
   try {
-    boards = await BoardsRepository.getOwnedBoardsForUser(user)
+    boards = await BoardsRepository.getOwnedBoardsForUser(requestData.user)
   } catch (e) {
-    const errorMsg = 'Could not find board for user due to internal error'
+    const errorMessage = 'Could not find board for user due to internal error'
     response.setStatus(500)
-    response.sendJSON({
-      message: errorMsg
-    })
+    response.send(errorMessage)
+  
+    throw e
+  }
 
-    console.error(errorMsg)
-    console.trace()
+  if (!boards || boards instanceof Array && boards.length === 0) {
+    response.setStatus(404)
+    response.send('Not found')
+    return
   }
 
   response.sendJSON(boards)

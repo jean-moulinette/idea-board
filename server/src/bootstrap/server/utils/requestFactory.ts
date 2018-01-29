@@ -17,14 +17,14 @@ export default class RequestFactory {
     const dataResolver = this.dataResolverFactory()
 
     return dataResolver[httpMethod]
-      ? dataResolver[httpMethod]
+      ? dataResolver[httpMethod]()
       : {}
   }
 
   private dataResolverFactory() {
     return {
-      get: this.fetchGetParams,
-      post: this.fetchPostParams,
+      get: () => this.fetchGetParams(),
+      post: () => this.fetchPostParams(),
       head: () => ({}),
       connect: () => ({}),
       options: () => ({}),
