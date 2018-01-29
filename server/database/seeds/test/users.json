@@ -1,1 +1,2 @@
 {"_id":{"$oid":"5a0822483e5bab103c5b4347"},"name":"testuser","email":"email@domain.com","password":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","emailVerified":true,"ownedBoards":[{"$oid":"5a241fe6cd8346627ddbae11"}],"guestBoards":[]}
+{"_id":{"$oid":"5a6f9d1c2884ea0eb34ca494"},"name":"user-no-boards-owned","email":"email@domain.com","password":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","emailVerified":true,"ownedBoards":[],"guestBoards":[]}
