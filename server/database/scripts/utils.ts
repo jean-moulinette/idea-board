@@ -1,6 +1,6 @@
-const { MongoClient } = require('mongodb')
+import { MongoClient, IndexOptions } from 'mongodb'
 
-exports.getDatabaseHost = function() {
+export function getDatabaseHost() {
   const {
     DATABASE_HOST,
     DATABASE_PORT,
@@ -9,12 +9,20 @@ exports.getDatabaseHost = function() {
   return `${DATABASE_HOST}:${DATABASE_PORT}`
 }
 
-exports.getDatabaseURI = function(databaseName) {
+export function getDatabaseURI(databaseName: string) {
   const { DATABASE_HOST, DATABASE_PORT } = process.env
   return `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${databaseName}`
 }
 
-exports.createConstraints = async function(databaseURI, constraintsConfig) {
+type ConstraintConfig = {
+  collection: string
+  constraints: Array<{
+    options: IndexOptions
+    field: string
+  }>
+}
+
+export async function createConstraints(databaseURI: string, constraintsConfig: ConstraintConfig[]) {
   const db = await MongoClient.connect(databaseURI)
 
   await constraintsConfig.map(async (constraintConfig) => {

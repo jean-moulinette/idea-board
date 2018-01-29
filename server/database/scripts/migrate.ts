@@ -1,14 +1,15 @@
-require('dotenv').config()
-const { spawn } = require('child_process')
+import * as dotenv from 'dotenv'
+import { spawn } from 'child_process'
 
-const constraints = require('../seeds/constraints.json')
-const { getDatabaseHost, createConstraints, getDatabaseURI } = require('./utils')
+import { getDatabaseHost, createConstraints, getDatabaseURI } from './utils'
+var constraints = require('../seeds/constraints.json')
 
 main()
   .then(() => console.log('Successfully migrated'))
   .catch(e => console.log(e))
 
 async function main() {
+  dotenv.config()
   const { TEST_DATABASE_NAME, DATABASE_NAME } = process.env
 
   const databaseHost = getDatabaseHost()
@@ -23,7 +24,7 @@ async function main() {
   await createConstraints(testURI, constraints)
 }
 
-function triggerImport(databaseURI, databaseName, environement) {
+function triggerImport(databaseURI: string, databaseName: string, environement: string) {
   const importArguments = [
     '--drop',
     '--db',
@@ -40,7 +41,7 @@ function triggerImport(databaseURI, databaseName, environement) {
   return importFiles.map(file => createSpawnImportProcess(importArguments, file))
 }
 
-function createSpawnImportProcess(importArgs, fileName) {
+function createSpawnImportProcess(importArgs: string[], fileName: string) {
   return new Promise((resolve, reject) => {
     const importArgsWithFile = [
       ...importArgs,

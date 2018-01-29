@@ -16,7 +16,7 @@
     "lint": "eslint src --env node; exit 0",
     "test:unit:watch": "env NODE_ENV=test NODE_PATH=./ mocha -r ts-node/register --watch --recursive --reporter dot ./src/**/*.spec.ts",
     "test:integration:watch": "env NODE_ENV=test NODE_PATH=./ mocha mocha -r ts-node/register --watch --recursive --timeout 4000 --reporter dot ./tests/index.spec.ts ./tests/**/*.spec.ts",
-    "db:migrate": "env NODE_PATH=./ node database/scripts/migrate.js"
+    "db:migrate": "env NODE_PATH=./ ts-node database/scripts/migrate.ts"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
