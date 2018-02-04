@@ -13,7 +13,7 @@
     "build:watch": "webpack --watch --config ./build/webpack.dev.js",
     "start": "supervisor -q -t -n exit dist/main.js",
     "start:debug": "supervisor -k -q -t -n exit --inspect ./dist/main.js",
-    "lint": "eslint src --env node; exit 0",
+    "lint": "tslint --project tsconfig.json",
     "test:unit:watch": "env NODE_ENV=test NODE_PATH=./ mocha -r ts-node/register --watch --recursive --reporter dot ./src/**/*.spec.ts",
     "test:integration:watch": "env NODE_ENV=test NODE_PATH=./ mocha mocha -r ts-node/register --watch --recursive --timeout 4000 --reporter dot ./tests/index.spec.ts ./tests/**/*.spec.ts",
     "db:migrate": "env NODE_PATH=./ ts-node database/scripts/migrate.ts"
@@ -48,6 +48,8 @@
     "supervisor": "^0.12.0",
     "ts-node": "^4.1.0",
     "tsconfig-paths-webpack-plugin": "^2.0.0",
+    "tslint": "^5.9.1",
+    "tslint-config-airbnb": "^5.5.0",
     "typescript": "^2.6.2",
     "webpack": "^3.10.0"
   }
