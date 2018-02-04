@@ -24,7 +24,8 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.29"
+    "mongodb": "^2.2.29",
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.8",
@@ -36,6 +37,7 @@
     "@types/lodash": "^4.14.93",
     "@types/mocha": "^2.2.47",
     "@types/mongodb": "^2.2.19",
+    "@types/morgan": "^1.7.35",
     "@types/node": "^9.3.0",
     "awesome-typescript-loader": "^3.4.1",
     "chai": "^4.1.1",

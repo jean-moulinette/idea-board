@@ -9,6 +9,7 @@ import {
 } from 'express-serve-static-core';
 import { Server } from 'http';
 import { json } from 'body-parser';
+import * as morgan from 'morgan';
 
 import RequestFactory from 'src/bootstrap/server/utils/requestFactory';
 import ResponseFactory from 'src/bootstrap/server/utils/responseFactory';
@@ -24,11 +25,19 @@ export default class ServerFactory {
   private port: string;
 
   public startServer() {
-    const { env: { NODE_ENV } } = process;
+    const { env: { NODE_ENV, TEST_SERVER_PORT, SERVER_PORT } } = process;
+
+    if (NODE_ENV === 'test' && !TEST_SERVER_PORT) {
+      throw new Error('Missing test server port');
+    }
+
+    if (NODE_ENV !== 'test' && !SERVER_PORT) {
+      throw new Error('Missing server port');
+    }
 
     this.port = NODE_ENV === 'test'
-      ? process.env.TEST_SERVER_PORT
-      : process.env.SERVER_PORT || process.env.PORT;
+      ? <string> TEST_SERVER_PORT
+      : <string> SERVER_PORT;
 
     this.app = express();
     this.configureServer();
@@ -53,8 +62,19 @@ export default class ServerFactory {
   }
 
   private configureServer() {
+    const { env: { NODE_ENV } } = process;
+    
+    if (NODE_ENV !== 'production' && NODE_ENV !== 'test') {
+      this.addMiddleWare(this.createLogger());
+    }
+
     this.addMiddleWare(json());
     bootstrapRouter(this);
+  }
+
+  private createLogger(): RequestHandler {
+
+    return morgan('combined');
   }
 
   private addMiddleWare(middleware: RequestHandler) {
