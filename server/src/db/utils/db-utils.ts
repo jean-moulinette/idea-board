@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient } from 'mongodb';
 
 export function buildDatabaseConn() {
   const {
@@ -7,19 +7,19 @@ export function buildDatabaseConn() {
     DATABASE_NAME,
     TEST_DATABASE_NAME,
     NODE_ENV,
-  } = process.env
+  } = process.env;
 
   const databaseName = NODE_ENV === 'test'
     ? TEST_DATABASE_NAME
-    : DATABASE_NAME
+    : DATABASE_NAME;
 
-  return `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${databaseName}`
+  return `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${databaseName}`;
 }
 
 export async function getDatabaseSession(conn: string) {
   try {
-    return await MongoClient.connect(conn)
+    return await MongoClient.connect(conn);
   } catch (e) {
-    throw new Error(e)
+    throw new Error(e);
   }
 }

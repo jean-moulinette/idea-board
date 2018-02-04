@@ -1,15 +1,15 @@
-import User, { IdeaBoardUser } from 'src/db/user'
+import User, { IdeaBoardUser } from 'src/db/user';
 
 export default class UsersRepository {
   static async getUserInfos(name: string): Promise<IdeaBoardUser> {
-    let user
+    let user;
 
     try {
-      user = await User.findByName(name)
+      user = await User.findByName(name);
     } catch (e) {
-      throw e
+      throw e;
     }
 
-    return user
+    return user;
   }
 }

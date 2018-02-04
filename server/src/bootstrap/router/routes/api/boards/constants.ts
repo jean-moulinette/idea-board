@@ -1,1 +1,1 @@
-export const BOARDS_BASE_ROUTE = '/boards'
+export const BOARDS_BASE_ROUTE = '/boards';

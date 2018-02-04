@@ -1,1 +1,1 @@
-export const IDEA_BASE_ROUTE = 'api/boards'
+export const IDEA_BASE_ROUTE = 'api/boards';

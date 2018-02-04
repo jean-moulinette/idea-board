@@ -1,24 +1,24 @@
-import { Request } from 'express-serve-static-core'
+import { Request } from 'express-serve-static-core';
 
-import { HttpMethodNameLower } from 'src/bootstrap/router/constants'
+import { HttpMethodNameLower } from 'src/bootstrap/router/constants';
 
 export type RequestData = {
-  [key: string]: any
-}
+  [key: string]: any,
+};
 
 export default class RequestFactory {
-  private request: Request
+  private request: Request;
 
   public constructor(request: Request) {
-    this.request = request
+    this.request = request;
   }
 
   public fetchData(httpMethod: HttpMethodNameLower): RequestData {
-    const dataResolver = this.dataResolverFactory()
+    const dataResolver = this.dataResolverFactory();
 
     return dataResolver[httpMethod]
       ? dataResolver[httpMethod]()
-      : {}
+      : {};
   }
 
   private dataResolverFactory() {
@@ -33,15 +33,15 @@ export default class RequestFactory {
       delete: () => ({}),
       put: () => ({}),
       all: () => ({}),
-    }
+    };
   }
 
   private fetchGetParams() {
-    return this.request.query
+    return this.request.query;
   }
 
   private fetchPostParams() {
-    return this.request.body
+    return this.request.body;
   }
 
 }
