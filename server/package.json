@@ -13,7 +13,7 @@
     "build:watch": "webpack --watch --config ./build/webpack.dev.js",
     "start": "supervisor -q -t -n exit dist/main.js",
     "start:debug": "supervisor -k -q -t -n exit --inspect ./dist/main.js",
-    "lint": "tslint --project tsconfig.json",
+    "lint": "tslint -p . -c tslint.json -t stylish",
     "test:unit:watch": "env NODE_ENV=test NODE_PATH=./ mocha -r ts-node/register --watch --recursive --reporter dot ./src/**/*.spec.ts",
     "test:integration:watch": "env NODE_ENV=test NODE_PATH=./ mocha mocha -r ts-node/register --watch --recursive --timeout 4000 --reporter dot ./tests/index.spec.ts ./tests/**/*.spec.ts",
     "db:migrate": "env NODE_PATH=./ ts-node database/scripts/migrate.ts"

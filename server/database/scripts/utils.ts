@@ -1,39 +1,44 @@
-import { MongoClient, IndexOptions } from 'mongodb'
+import { MongoClient, IndexOptions } from 'mongodb';
 
 export function getDatabaseHost() {
   const {
     DATABASE_HOST,
     DATABASE_PORT,
-  } = process.env
+  } = process.env;
 
-  return `${DATABASE_HOST}:${DATABASE_PORT}`
+  return `${DATABASE_HOST}:${DATABASE_PORT}`;
 }
 
 export function getDatabaseURI(databaseName: string) {
-  const { DATABASE_HOST, DATABASE_PORT } = process.env
-  return `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${databaseName}`
+  const { DATABASE_HOST, DATABASE_PORT } = process.env;
+  return `mongodb://${DATABASE_HOST}:${DATABASE_PORT}/${databaseName}`;
 }
+
+type Constraint = {
+  options: IndexOptions
+  field: string,
+};
 
 type ConstraintConfig = {
   collection: string
-  constraints: Array<{
-    options: IndexOptions
-    field: string
-  }>
-}
+  constraints: Constraint[],
+};
 
-export async function createConstraints(databaseURI: string, constraintsConfig: ConstraintConfig[]) {
-  const db = await MongoClient.connect(databaseURI)
+export async function createConstraints(
+  databaseURI: string,
+  constraintsConfig: ConstraintConfig[],
+) {
+  const db = await MongoClient.connect(databaseURI);
 
   await constraintsConfig.map(async (constraintConfig) => {
-    const { collection, constraints } = constraintConfig
-    const dbCollection = await db.collection(collection)
+    const { collection, constraints } = constraintConfig;
+    const dbCollection = await db.collection(collection);
 
     await constraints.map(async (constraint) => {
-      const { options, field } = constraint
+      const { options, field } = constraint;
 
-      await dbCollection.createIndex(field, options)
-      db.close()
-    })
-  })
+      await dbCollection.createIndex(field, options);
+      db.close();
+    });
+  });
 }

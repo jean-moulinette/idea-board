@@ -1,3 +1,3 @@
-import ServerFactory from './utils/serverFactory'
+import ServerFactory from './utils/serverFactory';
 
-export default new ServerFactory()
+export default new ServerFactory();

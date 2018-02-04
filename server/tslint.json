@@ -3,6 +3,9 @@
   "rules": {
     "import-name": {
       "severity": "off"
+    },
+    "strict-boolean-expressions": {
+      "severity": "off"
     }
   }
 }

@@ -9,7 +9,7 @@ export const HTTP_METHOD: { [key: string]: HttpMethodNameUpper } = {
   DELETE: 'DELETE',
   PUT: 'PUT',
   ALL: 'ALL',
-}
+};
 
 export type HttpMethodNameLower = 'get' |
   'post' |
@@ -20,7 +20,7 @@ export type HttpMethodNameLower = 'get' |
   'patch' |
   'delete' |
   'put' |
-  'all'
+  'all';
 
 export type HttpMethodNameUpper = 'GET' |
   'POST' |
@@ -31,4 +31,4 @@ export type HttpMethodNameUpper = 'GET' |
   'PATCH' |
   'DELETE' |
   'PUT' |
-  'ALL'
+  'ALL';
