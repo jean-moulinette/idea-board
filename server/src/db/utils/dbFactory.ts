@@ -6,6 +6,8 @@ import {
   getDatabaseSession,
 } from './db-utils';
 
+dotenv.config();
+
 type Core = {
   db: Db
   conn: string,
@@ -16,25 +18,26 @@ class DbFactory {
   public connected: boolean;
 
   public constructor() {
-    this.connected = false;
-    this.core = {
-      db: null,
-      conn: null,
-    };
-    
-    dotenv.config();
-    
+    this.connected = false;    
     this.connect();
   }
   
-  public async connect() {
-    this.core.conn = buildDatabaseConn();
+  private async connect() {
+    const conn = buildDatabaseConn();
+    let db;
+
     try {
-      this.core.db = await getDatabaseSession(this.core.conn);
+      db = await getDatabaseSession(conn);
     } catch (e) {
-      console.log(`\nCould not connect to database: ${this.core.conn}`);
+      console.log(`\nCould not connect to database: ${conn}`);
       console.log(e.message);
+      throw e;
     }
+
+    this.core = {
+      conn,
+      db,
+    };
 
     this.connected = true;
   }

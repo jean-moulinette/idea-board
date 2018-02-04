@@ -12,13 +12,22 @@ async function main() {
   dotenv.config();
   const { TEST_DATABASE_NAME, DATABASE_NAME } = process.env;
 
+  if (!DATABASE_NAME) {
+    throw new Error('Missing database name');
+  }
+
   const databaseHost = getDatabaseHost();
 
   const developementURI = getDatabaseURI(DATABASE_NAME);
+
+  if (!TEST_DATABASE_NAME) {
+    throw new Error('Missing test database name');
+  }
+
   const testURI = getDatabaseURI(TEST_DATABASE_NAME);
 
-  await Promise.all(triggerImport(databaseHost, process.env.DATABASE_NAME, 'developement'));
-  await Promise.all(triggerImport(databaseHost, process.env.TEST_DATABASE_NAME, 'test'));
+  await Promise.all(triggerImport(databaseHost, DATABASE_NAME, 'developement'));
+  await Promise.all(triggerImport(databaseHost, TEST_DATABASE_NAME, 'test'));
 
   await createConstraints(developementURI, constraints);
   await createConstraints(testURI, constraints);

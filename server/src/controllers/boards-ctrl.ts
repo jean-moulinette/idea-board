@@ -15,6 +15,8 @@ export async function getBoardsForUser(
     const errorMessage = 'Unable to find "user" in query params';
     response.setStatus(422);
     response.send(errorMessage);
+
+    return;
   }
 
   try {

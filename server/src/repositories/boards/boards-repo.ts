@@ -4,7 +4,7 @@ import Board from 'src/db/board/Board';
 import UsersRepository from 'src/repositories/user/users-repo';
 
 export default class BoardsRepository {
-  static async getOwnedBoardsForUser(userName: string): Promise<Board[]> {
+  static async getOwnedBoardsForUser(userName: string): Promise<Board[] | null> {
     let user;
     let userBoards;
 
